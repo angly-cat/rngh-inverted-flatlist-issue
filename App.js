@@ -8,31 +8,34 @@ import React, { Component } from 'react';
 import {
   Platform,
   StyleSheet,
+  FlatList,
   Text,
   View
 } from 'react-native';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import { ScrollView } from 'react-native-gesture-handler';
 
 type Props = {};
 export default class App extends Component<Props> {
   render() {
+    const data = [];
+    for (let i = 1; i <= 50; i++) {
+      data.push(i);
+    }
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <FlatList
+            data={data}
+            keyExtractor={({ item }) => `${item}`}
+            renderItem={({ item }) => (
+              <View style={styles.item}>
+                <Text>
+                  {item}
+                </Text>
+              </View>
+            )}
+            inverted
+            renderScrollComponent={(props) => <ScrollView {...props} />}
+        />
       </View>
     );
   }
@@ -42,17 +45,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
   },
 });
